@@ -8,7 +8,9 @@ function App() {
       <button onClick={ async () => {
         const response = await fetch('http://localhost:4000/users');
         const data = await response.json();
-        console.log(data);
+        data.forEach(user => {
+          console.log(user.name);
+        });
       }
         
       } >Obtener datos</button>
