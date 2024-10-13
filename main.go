@@ -39,5 +39,21 @@ func main() {
 		return c.JSON(users)
 	})
 
+	app.Post("/users", func(c *fiber.Ctx) error {
+		var user User
+
+		// Parsear el JSON del cuerpo de la solicitud
+		if err := c.BodyParser(&user); err != nil {
+			return c.Status(400).SendString("Error al parsear los datos")
+		}
+
+		// Crear el usuario en la base de datos
+		if err := db.Create(&user).Error; err != nil {
+			return c.Status(500).SendString("Error al crear usuario")
+		}
+
+		return c.JSON(user)
+	})
+
 	log.Fatal(app.Listen(":4000"))
 }
