@@ -1,12 +1,21 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import axios from 'axios';
 
 function App() {
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
-  const onSubmit = (data) => {
-    console.log('Datos del formulario:', data);
+  const onSubmit = async (data) => {
+    console.log(data)
+    try {
+      // Realiza la petición POST usando Axios
+      const response = await axios.post('http://localhost:4000/register', data);
+      console.log('Respuesta del servidor:', response.data);
+      alert('Registro exitoso');
+    } catch (error) {
+      console.error('Error al enviar el formulario:', error);
+      alert('Hubo un error al registrar');
+    }
   };
-
   // Validación para confirmar que las contraseñas coincidan
   const password = watch('password');
 

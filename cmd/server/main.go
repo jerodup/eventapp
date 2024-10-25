@@ -23,11 +23,18 @@ func main() {
 	app := fiber.New()
 
 	// Habilitar CORS
-	app.Use(cors.New())
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "http://localhost:5173", // Cambia esto a la URL de tu frontend
+		AllowMethods: "GET,POST,PUT,DELETE,OPTIONS",
+		AllowHeaders: "Origin, Content-Type, Accept",
+	}))
 
 	// Rutas
 	app.Post("/register", func(c *fiber.Ctx) error {
 		return handlers.Register(c, dbConn)
+	})
+	app.Get("/register", func(c *fiber.Ctx) error {
+		return c.SendString("Hello, World!")
 	})
 
 	log.Fatal(app.Listen(":4000"))
