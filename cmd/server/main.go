@@ -3,25 +3,32 @@ package main
 import (
 	"log"
 
-	"github.com/jerodup/go-react/internal/db"
-	"github.com/jerodup/go-react/internal/handlers"
-
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/jerodup/go-react/internal/db"
+	"github.com/jerodup/go-react/internal/handlers"
 )
 
 func main() {
-	// Inicializar la base de datos
-	dbConn := db.Init()
+	// Conectar a la base de datos
+	dbConn, err := db.Connect()
+	if err != nil {
+		log.Fatal("Error al conectarse a la base de datos:", err)
+	}
 
-	// Crear una nueva aplicación Fiber
+	// Migrar modelos
+	db.Migrate(dbConn)
+
+	// Configurar el servidor Fiber
 	app := fiber.New()
 
+	// Habilitar CORS
 	app.Use(cors.New())
 
-	// Registrar rutas
-	handlers.SetupUserRoutes(app, dbConn)
+	// Rutas
+	app.Post("/register", func(c *fiber.Ctx) error {
+		return handlers.Register(c, dbConn)
+	})
 
-	// Iniciar el servidor
 	log.Fatal(app.Listen(":4000"))
 }
