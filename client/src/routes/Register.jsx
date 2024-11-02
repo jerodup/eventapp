@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 
-function App() {
+function Register() {
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const onSubmit = async (data) => {
     console.log(data)
@@ -101,4 +101,4 @@ function App() {
   );
 }
 
-export default App;
+export default Register;

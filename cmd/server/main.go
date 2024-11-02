@@ -33,8 +33,8 @@ func main() {
 	app.Post("/register", func(c *fiber.Ctx) error {
 		return handlers.Register(c, dbConn)
 	})
-	app.Get("/register", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!")
+	app.Post("/login", func(c *fiber.Ctx) error {
+		return handlers.Login(c, dbConn)
 	})
 
 	log.Fatal(app.Listen(":4000"))
