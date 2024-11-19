@@ -1,15 +1,18 @@
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const { register, handleSubmit, formState: { errors } } = useForm();
+   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post('http://localhost:4000/login', data);
+      const response = await axios.post('http://localhost:4000/login', data, { withCredentials: true });
       console.log('Respuesta del servidor:', response.data);
       alert('Inicio de sesión exitoso');
-      // Aquí podrías almacenar el token de autenticación o redirigir al usuario
+       navigate("/dashboard");
+      // almacenar el token
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
       alert('Hubo un error al iniciar sesión');
