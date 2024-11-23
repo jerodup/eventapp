@@ -38,7 +38,10 @@ func VerifyAuth(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"message": "Token no válido o expirado"})
 	}
 
+	// Guardar el user_id en el contexto de la solicitud
+	c.Locals("user_id", claims.UserID)
+
 	// Respuesta de éxito si el token es válido
 	fmt.Println("Token válido, autenticación exitosa")
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{"message": "Autenticado"})
+	return c.Next() // Continuar al siguiente handler si el token es válido
 }

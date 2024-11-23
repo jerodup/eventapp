@@ -39,7 +39,14 @@ func main() {
 		return handlers.Login(c, dbConn)
 	})
 
-	app.Get("/auth", handlers.VerifyAuth)
+	app.Get("/auth", handlers.VerifyAuth, func(c *fiber.Ctx) error {
+		return c.JSON(fiber.Map{
+			"message": "Esta es una ruta protegida",
+		})
+	})
+	app.Get("/events", handlers.VerifyAuth, func(c *fiber.Ctx) error {
+		return handlers.GetUserEvents(c, dbConn)
+	})
 
 	log.Fatal(app.Listen(":4000"))
 }
