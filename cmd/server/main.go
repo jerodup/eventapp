@@ -22,6 +22,8 @@ func main() {
 	// Configurar el servidor Fiber
 	app := fiber.New()
 
+	app.Static("/uploads", "./uploads")
+
 	// Habilitar CORS
 	app.Use(cors.New(cors.Config{
 		AllowOrigins:     "http://localhost:5173", // Cambia esto a la URL de tu frontend
@@ -46,6 +48,17 @@ func main() {
 	})
 	app.Get("/events", handlers.VerifyAuth, func(c *fiber.Ctx) error {
 		return handlers.GetUserEvents(c, dbConn)
+	})
+
+	app.Post("/events", handlers.VerifyAuth, func(c *fiber.Ctx) error {
+		return handlers.CreateEvent(c, dbConn)
+	})
+	app.Get("/events/all", func(c *fiber.Ctx) error {
+		return handlers.GetAllEvents(c, dbConn)
+	})
+
+	app.Get("/events/:id", func(c *fiber.Ctx) error {
+		return handlers.GetEventByID(c, dbConn)
 	})
 
 	log.Fatal(app.Listen(":4000"))

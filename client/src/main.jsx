@@ -8,11 +8,16 @@ import Register from './routes/Register.jsx'
 import Login from './routes/Login.jsx'
 import Dashboard from './routes/Dashboard.jsx'
 import Auth from './components/auth.jsx'
+import EventDetail from './routes/EventDetail.jsx'
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home/>
+  },
+  {
+    path:"/events/:id",
+    element: <EventDetail />
   },
   {
     path: "/register",
