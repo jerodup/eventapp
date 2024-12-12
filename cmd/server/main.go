@@ -53,6 +53,7 @@ func main() {
 	app.Post("/events", handlers.VerifyAuth, func(c *fiber.Ctx) error {
 		return handlers.CreateEvent(c, dbConn)
 	})
+	// Rutas para eventos home
 	app.Get("/events/all", func(c *fiber.Ctx) error {
 		return handlers.GetAllEvents(c, dbConn)
 	})

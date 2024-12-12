@@ -22,12 +22,12 @@ export default function EventDetail() {
   if (!event) return <p>Cargando evento...</p>;
 
   return (
-    <div style={{ padding: "16px" }}>
+    <div className="p-4">
       <h1>{event.title}</h1>
       <img
         src={event.image_url}
         alt={event.title}
-        style={{ width: "100%", height: "auto", borderRadius: "8px" }}
+        className="w-96 h-auto object-cover mb-4 rounded-md"
       />
       <p><strong>Descripción:</strong> {event.description}</p>
       <p><strong>Fecha:</strong> {new Date(event.event_date).toLocaleDateString()}</p>
