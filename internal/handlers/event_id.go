@@ -17,7 +17,6 @@ func GetEventByID(c *fiber.Ctx, db *gorm.DB) error {
 			"error":   err.Error(),
 		})
 	}
-
 	// Devolver el evento en la respuesta
 	return c.JSON(event)
 }

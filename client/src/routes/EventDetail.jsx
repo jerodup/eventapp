@@ -15,23 +15,21 @@ export default function EventDetail() {
         console.error("Error al obtener el evento:", error.response?.data || error.message);
       }
     };
-
     fetchEvent();
   }, [id]);
 
   if (!event) return <p>Cargando evento...</p>;
-
   return (
-    <div className="p-4">
-      <h1>{event.title}</h1>
+    <div className="max-w-7xl mx-auto ">
+      <h1 className="text-2xl font-bold mb-4">{event.Title}</h1>
       <img
-        src={event.image_url}
-        alt={event.title}
+        src={event.ImageURL}
+        alt={event.Title}
         className="w-96 h-auto object-cover mb-4 rounded-md"
       />
-      <p><strong>Descripción:</strong> {event.description}</p>
-      <p><strong>Fecha:</strong> {new Date(event.event_date).toLocaleDateString()}</p>
-      <p><strong>Ubicación:</strong> {event.location}</p>
+      <p><strong>Descripción:</strong> {event.Description}</p>
+      <p><strong>Fecha:</strong> {new Date(event.EventDate).toLocaleDateString()}</p>
+      <p><strong>Ubicación:</strong> {event.Location}</p>
     </div>
   );
 }

@@ -3,11 +3,12 @@ package models
 import "time"
 
 type Event struct {
-	EventID     uint      `gorm:"primaryKey" json:"event_id"`
-	UserID      uint      `json:"user_id"`
-	Title       string    `json:"title"`
-	EventDate   time.Time `json:"event_date"`
-	Description string    `json:"description"`
-	ImageURL    string    `json:"image_url"`
-	Location    string    `json:"location"`
+	EventID     uint      `gorm:"primaryKey"`
+	UserID      uint      `gorm:"not null"`
+	Title       string    `gorm:"not null"`
+	EventDate   time.Time `gorm:"not null"`
+	Description string
+	ImageURL    string
+	Location    string
+	Geom        string `gorm:"type:geometry"` // Define el campo Geom
 }

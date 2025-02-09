@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import MapPicker from "./MapPicker"; // Componente para seleccionar la ubicación en el mapa
+import GoogleMapPicker from "./GoogleMapPicker";
 
 const EventModal = ({ isOpen, onClose, onSubmit }) => {
-  const [location, setLocation] = useState(""); // Ubicación seleccionada
-  const [file, setFile] = useState(null); // Archivo seleccionado
+  const [location, setLocation] = useState("");
+  const [file, setFile] = useState(null);
 
   const {
     register,
@@ -12,23 +12,23 @@ const EventModal = ({ isOpen, onClose, onSubmit }) => {
     formState: { errors },
   } = useForm();
 
-  if (!isOpen) return null; // No renderizar si el modal está cerrado
-
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
 
-  const handleLocationChange = (newLocation) => {
-    setLocation(newLocation); // Actualizar la ubicación seleccionada
+  const handleLocationChange = (coords) => {
+    setLocation(coords); // Actualiza la ubicación seleccionada
   };
 
+  if (!isOpen) return null; // Si el modal no está abierto, no se renderiza nada
+
   const onFormSubmit = (data) => {
-    onSubmit(data, file, location); // Pasar los datos, archivo y ubicación al handler del padre
+    onSubmit(data, file, location); // Pasar los datos del formulario, archivo y ubicación seleccionada
   };
 
   return (
     <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white p-8 rounded shadow-lg max-w-md w-full">
+      <div className="bg-white p-8 rounded shadow-lg max-w-md w-full max-h-screen overflow-y-auto">
         <h2 className="text-2xl font-bold mb-4">Crear Nuevo Evento</h2>
         <form onSubmit={handleSubmit(onFormSubmit)}>
           <div className="mb-4">
@@ -52,7 +52,9 @@ const EventModal = ({ isOpen, onClose, onSubmit }) => {
           <div className="mb-4">
             <label className="block text-gray-700 font-bold mb-2">Fecha:</label>
             <input
-              {...register("event_date", { required: "La fecha es obligatoria" })}
+              {...register("event_date", {
+                required: "La fecha es obligatoria",
+              })}
               type="datetime-local"
               className={`border p-2 w-full rounded ${
                 errors.event_date ? "border-red-500" : "border-gray-300"
@@ -69,7 +71,9 @@ const EventModal = ({ isOpen, onClose, onSubmit }) => {
               Descripción:
             </label>
             <textarea
-              {...register("description", { required: "La descripción es obligatoria" })}
+              {...register("description", {
+                required: "La descripción es obligatoria",
+              })}
               placeholder="Descripción del evento"
               className={`border p-2 w-full rounded ${
                 errors.description ? "border-red-500" : "border-gray-300"
@@ -97,13 +101,12 @@ const EventModal = ({ isOpen, onClose, onSubmit }) => {
             <label className="block text-gray-700 font-bold mb-2">
               Ubicación:
             </label>
-            {/* Mapa para seleccionar la ubicación */}
-            <MapPicker onChange={handleLocationChange} />
+            <GoogleMapPicker onChange={handleLocationChange} />
             <p className="text-sm text-gray-500 mt-2">
-              Dirección seleccionada: {location || "No seleccionada"}
+              Dirección seleccionada: {location ? location : "No seleccionada"}
             </p>
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-end mt-4">
             <button
               type="button"
               onClick={onClose}

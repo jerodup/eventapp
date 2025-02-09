@@ -43,7 +43,8 @@ func main() {
 
 	app.Get("/auth", handlers.VerifyAuth, func(c *fiber.Ctx) error {
 		return c.JSON(fiber.Map{
-			"message": "Esta es una ruta protegida",
+			"message":       "Esta es una ruta protegida",
+			"authenticated": true,
 		})
 	})
 	app.Get("/events", handlers.VerifyAuth, func(c *fiber.Ctx) error {
@@ -53,11 +54,9 @@ func main() {
 	app.Post("/events", handlers.VerifyAuth, func(c *fiber.Ctx) error {
 		return handlers.CreateEvent(c, dbConn)
 	})
-	// Rutas para eventos home
-	app.Get("/events/all", func(c *fiber.Ctx) error {
-		return handlers.GetAllEvents(c, dbConn)
+	app.Get("/events/nearby", func(c *fiber.Ctx) error {
+		return handlers.GetNearbyEvents(c, dbConn)
 	})
-
 	app.Get("/events/:id", func(c *fiber.Ctx) error {
 		return handlers.GetEventByID(c, dbConn)
 	})

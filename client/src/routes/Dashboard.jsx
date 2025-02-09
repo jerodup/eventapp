@@ -11,13 +11,16 @@ export default function Dashboard() {
     const fetchUserEvents = async () => {
       try {
         const response = await axios.get("http://localhost:4000/events", {
-          withCredentials: true, // Envía las cookies (incluye el JWT en la cookie)
+          withCredentials: true,
         });
 
         setEvents(response.data); // Almacena los eventos en el estado
         console.log("Eventos del usuario:", response.data);
       } catch (error) {
-        console.error("Error al obtener los eventos:", error.response?.data || error.message);
+        console.error(
+          "Error al obtener los eventos:",
+          error.response?.data || error.message
+        );
       }
     };
 
@@ -44,17 +47,26 @@ export default function Dashboard() {
       formData.append("image", file); // Agrega la imagen seleccionada
       formData.append("location", location); // Agrega la ubicación seleccionada
 
+      console.log(formData);
+      console.log(location);
       // Realiza la petición POST al servidor
-      const response = await axios.post("http://localhost:4000/events", formData, {
-        withCredentials: true, // Incluye las credenciales
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const response = await axios.post(
+        "http://localhost:4000/events",
+        formData,
+        {
+          withCredentials: true, // Incluye las credenciales
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
 
       console.log("Evento creado:", response.data);
       setEvents((prevEvents) => [...prevEvents, response.data]); // Actualiza la lista de eventos
       handleCloseModal(); // Cierra el modal
     } catch (error) {
-      console.error("Error al crear el evento:", error.response?.data || error.message);
+      console.error(
+        "Error al crear el evento:",
+        error.response?.data || error.message
+      );
     }
   };
 
@@ -73,11 +85,17 @@ export default function Dashboard() {
         {events.length > 0 ? (
           <ul>
             {events.map((event) => (
-              <li key={event.event_id} className="border p-4 mb-2 rounded shadow">
-                <h2 className="text-xl font-bold">{event.title}</h2>
-                <p>Fecha: {new Date(event.event_date).toLocaleString()}</p>
-                <p>{event.description}</p>
-                <p>Ubicación: {event.location}</p>
+              <li
+                key={event.EventID}
+                className="border p-4 mb-2 rounded shadow"
+              >
+                <h2 className="text-xl font-bold">{event.Title}</h2>
+                <p>Fecha: {new Date(event.EventDate).toLocaleString()}</p>
+                <p>{event.Description}</p>
+                <p>Ubicación: {event.Location}</p>
+                <button className="mt-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                  Eliminar
+                </button>
               </li>
             ))}
           </ul>
