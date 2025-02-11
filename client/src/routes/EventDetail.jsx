@@ -20,16 +20,19 @@ export default function EventDetail() {
 
   if (!event) return <p>Cargando evento...</p>;
   return (
-    <div className="max-w-7xl mx-auto ">
-      <h1 className="text-2xl font-bold mb-4">{event.Title}</h1>
+    <div className="mt-3 max-w-7xl mx-auto bg-white p-8 rounded-lg shadow">
       <img
         src={event.ImageURL}
         alt={event.Title}
-        className="w-96 h-auto object-cover mb-4 rounded-md"
+        className="w-72 h-auto object-cover mb-4 rounded-md"
       />
+      <h2 className="text-2xl font-bold mb-4">{event.Title}</h2>
       <p><strong>Descripción:</strong> {event.Description}</p>
       <p><strong>Fecha:</strong> {new Date(event.EventDate).toLocaleDateString()}</p>
       <p><strong>Ubicación:</strong> {event.Location}</p>
+      <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mt-4">
+        Comprar ticket
+      </button>
     </div>
   );
 }

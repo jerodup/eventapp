@@ -33,6 +33,15 @@ func main() {
 	}))
 
 	// Rutas
+
+	app.Get("/auth-check", func(c *fiber.Ctx) error {
+		token := c.Cookies("jwt")
+		if token == "" {
+			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"message": "No autenticado"})
+		}
+		return c.Status(fiber.StatusOK).JSON(fiber.Map{"message": "Autenticado"})
+	})
+
 	app.Post("/register", func(c *fiber.Ctx) error {
 		return handlers.Register(c, dbConn)
 	})
@@ -60,6 +69,10 @@ func main() {
 	app.Get("/events/:id", func(c *fiber.Ctx) error {
 		return handlers.GetEventByID(c, dbConn)
 	})
+	app.Delete("/events/:id", handlers.VerifyAuth, func(c *fiber.Ctx) error {
+		return handlers.DeleteEvent(c, dbConn)
+	})
+	app.Post("/logout", handlers.Logout)
 
 	log.Fatal(app.Listen(":4000"))
 }

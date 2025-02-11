@@ -6,6 +6,25 @@ export default function Dashboard() {
   const [events, setEvents] = useState([]); // Estado para almacenar los eventos del usuario
   const [isModalOpen, setModalOpen] = useState(false); // Estado para manejar el modal
 
+  // Función para eliminar un evento
+  const handleDeleteEvent = async (eventId) => {
+    try {
+      await axios.delete(`http://localhost:4000/events/${eventId}`, {
+        withCredentials: true,
+      });
+      // Actualizar el estado eliminando el evento de la lista
+      setEvents((prevEvents) =>
+        prevEvents.filter((event) => event.EventID !== eventId)
+      );
+      console.log(`Evento con ID ${eventId} eliminado`);
+    } catch (error) {
+      console.error(
+        "Error al eliminar el evento:",
+        error.response?.data || error.message
+      );
+    }
+  };
+
   // Función para obtener los eventos del usuario
   useEffect(() => {
     const fetchUserEvents = async () => {
@@ -15,7 +34,6 @@ export default function Dashboard() {
         });
 
         setEvents(response.data); // Almacena los eventos en el estado
-        console.log("Eventos del usuario:", response.data);
       } catch (error) {
         console.error(
           "Error al obtener los eventos:",
@@ -93,7 +111,10 @@ export default function Dashboard() {
                 <p>Fecha: {new Date(event.EventDate).toLocaleString()}</p>
                 <p>{event.Description}</p>
                 <p>Ubicación: {event.Location}</p>
-                <button className="mt-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                <button
+                  onClick={() => handleDeleteEvent(event.EventID)}
+                  className="mt-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                >
                   Eliminar
                 </button>
               </li>
