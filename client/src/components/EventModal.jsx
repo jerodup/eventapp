@@ -87,6 +87,33 @@ const EventModal = ({ isOpen, onClose, onSubmit }) => {
           </div>
           <div className="mb-4">
             <label className="block text-gray-700 font-bold mb-2">
+              Precio:
+            </label>
+            <input
+              {...register("price", {
+                required: "El precio es obligatorio",
+                pattern: {
+                  value: /^[0-9]+(\.[0-9]{1,2})?$/,
+                  message: "Debe ser un número válido",
+                },
+                min: { value: 0, message: "El precio no puede ser negativo" },
+              })}
+              type="number"
+              step="0.01"
+              placeholder="Precio de la entrada"
+              className={`border p-2 w-full rounded ${
+                errors.price ? "border-red-500" : "border-gray-300"
+              }`}
+            />
+            {errors.price && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.price.message}
+              </p>
+            )}
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-gray-700 font-bold mb-2">
               Imagen:
             </label>
             <input

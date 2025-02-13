@@ -20,6 +20,15 @@ func CreateEvent(c *fiber.Ctx, db *gorm.DB) error {
 	description := c.FormValue("description")
 	location := c.FormValue("location")
 	eventDate := c.FormValue("event_date")
+	priceStr := c.FormValue("price") // Obtener el precio como string
+
+	// Convertir el precio a float64
+	price, err := strconv.ParseFloat(strings.TrimSpace(priceStr), 64)
+	if err != nil || price < 0 {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "El precio es inválido, debe ser un número positivo",
+		})
+	}
 
 	// Manejar la carga de la imagen
 	file, err := c.FormFile("image")
@@ -73,6 +82,7 @@ func CreateEvent(c *fiber.Ctx, db *gorm.DB) error {
 		ImageURL:    imageURL,
 		EventDate:   parsedDate,
 		Geom:        fmt.Sprintf("SRID=4326;POINT(%f %f)", lng, lat), // Crear el campo Geom
+		Price:       price,                                           // Asignar el precio
 	}
 
 	// Guardar el evento usando GORM

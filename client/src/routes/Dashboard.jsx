@@ -62,24 +62,22 @@ export default function Dashboard() {
       formData.append("title", data.title);
       formData.append("event_date", data.event_date);
       formData.append("description", data.description);
-      formData.append("image", file); // Agrega la imagen seleccionada
-      formData.append("location", location); // Agrega la ubicación seleccionada
+      formData.append("image", file);
+      formData.append("location", location);
+      formData.append("price", data.price); // Añadir precio
 
-      console.log(formData);
-      console.log(location);
-      // Realiza la petición POST al servidor
       const response = await axios.post(
         "http://localhost:4000/events",
         formData,
         {
-          withCredentials: true, // Incluye las credenciales
+          withCredentials: true,
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
 
       console.log("Evento creado:", response.data);
-      setEvents((prevEvents) => [...prevEvents, response.data]); // Actualiza la lista de eventos
-      handleCloseModal(); // Cierra el modal
+      setEvents((prevEvents) => [...prevEvents, response.data]);
+      handleCloseModal();
     } catch (error) {
       console.error(
         "Error al crear el evento:",

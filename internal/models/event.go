@@ -10,5 +10,6 @@ type Event struct {
 	Description string
 	ImageURL    string
 	Location    string
-	Geom        string `gorm:"type:geometry"` // Define el campo Geom
+	Geom        string  `gorm:"type:geometry"` // Define el campo Geom
+	Price       float64 `gorm:"not null;default:0"`
 }
